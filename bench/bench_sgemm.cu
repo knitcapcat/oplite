@@ -15,6 +15,7 @@
 #include "oplite/gemm/sgemm_naive.cuh"
 #include "oplite/gemm/sgemm_smem.cuh"
 #include "oplite/gemm/sgemm_reg_tiled.cuh"
+#include "oplite/gemm/sgemm_vec.cuh"
 
 using namespace oplite;
 
@@ -97,6 +98,8 @@ void run_size(int M, int N, int K, cublasHandle_t handle) {
           [&]() { launch_sgemm_smem<>(dA, dB, dC, M, N, K); }, cublas_ms);
     bench("sgemm_reg_tiled",
           [&]() { launch_sgemm_reg_tiled<>(dA, dB, dC, M, N, K); }, cublas_ms);
+    bench("sgemm_vec",
+          [&]() { launch_sgemm_vec<>(dA, dB, dC, M, N, K); }, cublas_ms);
 
     cudaFree(dA);
     cudaFree(dB);
