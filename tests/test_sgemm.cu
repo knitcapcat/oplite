@@ -20,6 +20,7 @@
 #include "oplite/gemm/sgemm_smem.cuh"
 #include "oplite/gemm/sgemm_reg_tiled.cuh"
 #include "oplite/gemm/sgemm_vec.cuh"
+#include "oplite/gemm/sgemm_cp_async.cuh"
 
 using namespace oplite;
 
@@ -110,6 +111,8 @@ int main() {
             [](auto... args){ launch_sgemm_reg_tiled<>(args...); }, handle);
         failed += !run_one("sgemm_vec", c,
             [](auto... args){ launch_sgemm_vec<>(args...); }, handle);
+        failed += !run_one("sgemm_cp_async", c,
+            [](auto... args){ launch_sgemm_cp_async<>(args...); }, handle);
     }
 
     cublasDestroy(handle);
